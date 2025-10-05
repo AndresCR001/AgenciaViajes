@@ -1,9 +1,7 @@
-import customtkinter as ctk
-from ui.main_window import MainWindow
+import flet as ft
+from ui.main_window import main_window
 
-if __name__ == "__main__":
-    ctk.set_appearance_mode("system")  # "dark" o "light"
-    ctk.set_default_color_theme("blue")
+def main(page: ft.Page):
+    main_window(page)
 
-    app = MainWindow()
-    app.mainloop()
+ft.app(target=main)

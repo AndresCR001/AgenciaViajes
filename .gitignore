@@ -1,0 +1,24 @@
+# Entorno virtual
+venv/
+.env
+
+# Archivos temporales
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Configuración del sistema / IDE
+.vscode/
+.idea/
+.DS_Store
+
+# Archivos de compilación
+build/
+dist/
+*.spec
+
+# Credenciales o variables de entorno
+.env.local
+.env.*

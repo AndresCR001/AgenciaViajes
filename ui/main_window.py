@@ -1,26 +1,21 @@
-import customtkinter as ctk
+import flet as ft
+from ui.clientes_ui import clientes_ui
+from ui.tours_ui import tours_ui
+from ui.reportes_ui import reportes_ui
 
-class MainWindow(ctk.CTk):
-    def __init__(self):
-        super().__init__()
+def main_window(page: ft.Page):
+    page.title = "Agencia de Viajes - Sistema"
+    page.theme_mode = "light"
 
-        self.title("Agencia de Viajes - Sistema")
-        self.geometry("800x600")
+    def abrir_clientes(e): clientes_ui(page)
+    def abrir_tours(e): tours_ui(page)
+    def abrir_reportes(e): reportes_ui(page)
 
-        # Encabezado
-        self.label = ctk.CTkLabel(self, text="Sistema Agencia de Viajes", font=("Arial", 20, "bold"))
-        self.label.pack(pady=20)
-
-        # Botones de navegación
-        self.btn_clientes = ctk.CTkButton(self, text="Clientes", width=200, command=lambda: print("Clientes presionado"))
-        self.btn_clientes.pack(pady=10)
-
-        self.btn_tours = ctk.CTkButton(self, text="Tours", width=200, command=lambda: print("Tours presionado"))
-        self.btn_tours.pack(pady=10)
-
-        self.btn_reportes = ctk.CTkButton(self, text="Reportes", width=200, command=lambda: print("Reportes presionado"))
-        self.btn_reportes.pack(pady=10)
-
-        # Pie de página
-        self.label_footer = ctk.CTkLabel(self, text="© Agencia Viajes 2025", font=("Arial", 12))
-        self.label_footer.pack(side="bottom", pady=10)
+    page.add(
+        ft.Column([
+            ft.Text("Agencia de Viajes", size=30, weight="bold"),
+            ft.ElevatedButton("Clientes", on_click=abrir_clientes),
+            ft.ElevatedButton("Tours", on_click=abrir_tours),
+            ft.ElevatedButton("Reportes (Gerente)", on_click=abrir_reportes)
+        ])
+    )
