@@ -17,9 +17,3 @@ def crear_tour(codigo, destino, fecha_salida, fecha_llegada, plazas_totales):
 
 def listar_tours():
     return list(tours.find({}, {"_id": 0}))
-
-def actualizar_plazas(codigo, plazas_ocupadas):
-    tours.update_one({"codigo": codigo}, {"$set": {"plazas_ocupadas": plazas_ocupadas}})
-
-def obtener_tour(codigo):
-    return tours.find_one({"codigo": codigo}, {"_id": 0})

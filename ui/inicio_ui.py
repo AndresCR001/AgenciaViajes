@@ -1,9 +1,7 @@
 import flet as ft
-from database.connection import get_db
+from models.usuario_model import validar_usuario
 from ui.menu import menu
-
-db = get_db()
-usuarios_col = db["usuarios"]
+import importlib
 
 def inicio_ui(page: ft.Page):
     page.title = "Agencia de Viajes - Login"
@@ -13,23 +11,25 @@ def inicio_ui(page: ft.Page):
     contraseña = ft.TextField(label="Contraseña", password=True, can_reveal_password=True, width=300)
     mensaje = ft.Text("", color="red")
 
+    # Función para iniciar sesión
     def iniciar_sesion(e):
-        user = usuarios_col.find_one({"usuario": usuario.value, "contraseña": contraseña.value})
+        user = validar_usuario(usuario.value, contraseña.value)
         if user:
-            mensaje.value = f"¡Login exitoso! ✅ (Rol: {user['rol']})"
+            mensaje.value = "¡Login exitoso! ✅"
             mensaje.color = "green"
             page.update()
-            page.controls.clear()    
-            menu(page, user)
+            page.controls.clear()
+            menu(page, user)  # Pasamos el usuario para controlar permisos
         else:
             mensaje.value = "Usuario o contraseña incorrectos ❌"
             mensaje.color = "red"
             page.update()
 
-    def abrir_registro(e):
-        # Importación local para evitar circular import
-        from ui.registro_ui import registro_ui
-        registro_ui(page)
+    # Función para ir a registro de usuario
+    def ir_a_registro(e):
+        page.controls.clear()
+        mod = importlib.import_module("ui.registro_ui")
+        mod.registro_ui(page)
 
     page.controls.clear()
     page.add(
@@ -41,8 +41,8 @@ def inicio_ui(page: ft.Page):
                     contraseña,
                     ft.Row([
                         ft.ElevatedButton("Iniciar Sesión", on_click=iniciar_sesion, width=200),
-                        ft.ElevatedButton("Registrar Usuario", on_click=abrir_registro, width=200)
-                    ]),
+                        ft.ElevatedButton("Registrarse", on_click=ir_a_registro, width=200)
+                    ], alignment="center", spacing=20),
                     mensaje
                 ],
                 alignment="center",
