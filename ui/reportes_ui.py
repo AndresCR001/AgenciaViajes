@@ -3,7 +3,7 @@ from database.connection import get_db
 
 db = get_db()
 
-def reportes_ui(page: ft.Page):
+def reportes_ui(page: ft.Page, menu_ui):  # Recibimos menu_ui para retroceder
     resultado = ft.Column()
 
     def clientes_en_cuotas(e):
@@ -36,13 +36,20 @@ def reportes_ui(page: ft.Page):
             resultado.controls.append(ft.Text("Tour no encontrado.", color="red"))
         page.update()
 
+    def volver(e):
+        page.controls.clear()
+        menu_ui(page)
+        page.update()
+
     input_viajes = ft.TextField(label="Cantidad mínima de viajes", width=200)
     input_tour = ft.TextField(label="Código del tour", width=200)
+
+    boton_volver = ft.ElevatedButton("⬅ Volver", on_click=volver)
 
     page.controls.clear()
     page.add(
         ft.Column([
-            ft.Text("Reportes del Gerente", size=24, weight="bold"),
+            ft.Row([ft.Text("Reportes del Gerente", size=24, weight="bold"), boton_volver], alignment="spaceBetween"),
             ft.ElevatedButton("Clientes que pagan en cuotas", on_click=clientes_en_cuotas),
             ft.Row([input_viajes, ft.ElevatedButton("Buscar clientes frecuentes", on_click=clientes_frecuentes)]),
             ft.Row([input_tour, ft.ElevatedButton("Consultar plazas disponibles", on_click=plazas_disponibles)]),

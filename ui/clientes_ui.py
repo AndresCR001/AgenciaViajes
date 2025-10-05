@@ -1,7 +1,7 @@
 import flet as ft
 from models.cliente_model import crear_cliente, listar_clientes
 
-def clientes_ui(page: ft.Page):
+def clientes_ui(page: ft.Page, menu_ui):  # Recibimos la función del menú principal
     nombre = ft.TextField(label="Nombre")
     telefono = ft.TextField(label="Teléfono")
     direccion = ft.TextField(label="Dirección")
@@ -12,7 +12,14 @@ def clientes_ui(page: ft.Page):
         resultado.value = "Cliente agregado ✅"
         page.update()
 
-    boton = ft.ElevatedButton("Guardar Cliente", on_click=guardar)
+    def volver(e):
+        # Limpiamos la página y llamamos al menú principal
+        page.controls.clear()
+        menu_ui(page)
+        page.update()
+
+    boton_guardar = ft.ElevatedButton("Guardar Cliente", on_click=guardar)
+    boton_volver = ft.ElevatedButton("⬅ Volver", on_click=volver)
 
     page.controls.clear()
     page.add(
@@ -21,7 +28,7 @@ def clientes_ui(page: ft.Page):
             nombre,
             telefono,
             direccion,
-            boton,
+            ft.Row([boton_guardar, boton_volver], alignment="spaceBetween"),
             resultado
         ])
     )
